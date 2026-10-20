@@ -1,0 +1,2 @@
+#we do not want git to track our data directory (/data)
+/data
