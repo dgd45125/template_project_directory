@@ -7,7 +7,7 @@ Description: This is template project directory for teaching Git/GitHub. It is m
 
 Files and Directories:
 	README.txt --- This file.
-	analysis.R --- A simple analysis script written in R that analyses petal length in the Iris Dataset. Summary statistics are calculated for petal length by iris class, a petal length by class box plot is created, a one-way ANOVA is estimated, and posthoc Tukey's honest significance is used for pairwise comparisons.
+	analysis.R --- A simple analysis script written in R that analyses petal length in the Iris Dataset. Summary statistics are calculated for petal length by iris class and a petal length by class box plot is created. The assumptions for ANOVA are tested. Observing that they are not satisfied, the non-parametric alternative Kruskal-Wallis test is applied. 
 	iris.csv --- A comma-separated value file containing sepal and petal measurements from 150 iris flower observations. The dataset was downloaded from the UC Irvine Machine Learning Repository (https://archive.ics.uci.edu/dataset/53/iris), who make it available under CC BY 4.0.
 	   
 	      

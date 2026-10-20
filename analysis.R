@@ -47,13 +47,46 @@ boxplot(petal_length ~ class,
 #fit a one-way ANOVA: petal length ~ iris class
 model <-  aov(petal_length ~ class, data = iris_df)
 
-summary(model)
-#with very large F and very low p-value, we conclude that there
-#exists some difference in petal length means between iris classes.
 
+
+#but have we satisfied the ANOVA assumptions?
+
+
+#assumption 1: the data are independent and normally distributed.
+#satisfied by assuming correct sampling procedure
+
+
+#assumption 2: the residuals of the data are normally distributed (difference between an item and its class mean).
+#plot the standardized residuals by their theoretical quantiles
+plot(model, which = 2)
+#in a perfect world, there would be a perfect diagonal.
+#shapiro-wilk test evaluates the null hypothesis that the residuals are normally distributed
+shapiro.test(residuals(model))
+#because p < 0.05, we reject the null of normally distributed residuals
+
+
+#assumption 2: the variances of the groups are equal --- i.e., homogeneity of variance
+plot(model, which = 1)
+#normally, we would use the standard Levene test, but that requires an external package.
+#instead, because residuals are not normally distributed, we will use Fligner-Killeen
+fligner.test(petal_length ~ class, data = iris_df)
+#because p < 0.05, we reject the null hypothesis of equal variances --- i.e., homogeneity
+
+
+#do we have equal group sizes?
+table(iris_df$class)
+#yes
+
+
+
+#we at least have equal group sizes, so we will run kruskal-wallis
+kruskal.test <-  kruskal.test(petal_length ~ class, data = iris_df)
+print(kruskal.test)
+#because p< 0.05, we reject the null of no differences among groups
 
 #next, apply posthoc comparison to identify which classes (pairwise) are different from each other.
-#use Tukey's honest significance test (HSD)
-TukeyHSD(model)
-#p adj indicates comparison p-value after correcting for family-wise error rate. 
-#all 3 contrasts are significant: versicolor > setosa; virginica > setosa; virginica > versicolor
+#we will use Pairwise Wilcoxon Rank Sum Tests with Bonferroni correction for multiple comparisons
+pairwise.wilcox.test(iris_df$petal_length, iris_df$class, p.adjust.method = "bonferroni")
+#all comparisons are significant 
+
+
